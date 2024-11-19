@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Anniversary</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            position: relative;
+        }
+
+        /* Envelope Style */
+        #envelope {
+            width: 400px;
+            height: 250px;
+            background-color: #ff0000;
+            position: relative;
+            transform-origin: top;
+            animation: bounce 1.5s infinite;
+            cursor: pointer;
+            border-radius: 20px;
+        }
+
+        /* Envelope Rope Style */
+        #envelope:before {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-bottom: 75px solid #fff;
+            top: 0;
+        }
+
+        /* Envelope Bottom Style */
+        #envelope:after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 75px;
+            background-color: #fff;
+            bottom: 0;
+            border-radius: 0 0 20px 20px;
+        }
+
+        /* Animation for bouncing */
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        /* Letter Style */
+        #letter {
+            position: absolute;
+            width: 300px; /* Smaller letter size */
+            height: 400px; /* Adjusted height */
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            top: -500px;
+            opacity: 0;
+            font-family: "Brush Script MT", cursive;
+            font-size: 1.5em;
+            text-align: left;
+            padding: 20px;
+            border-radius: 10px;
+            animation: drop 2s forwards ease-in-out;
+            display: none;
+        }
+
+        /* Animation for letter dropping */
+        @keyframes drop {
+            0% {
+                opacity: 0;
+                top: -500px;
+            }
+            100% {
+                opacity: 1;
+                top: 50px;
+            }
+        }
+
+        /* Letter Text */
+        #letter-text {
+            font-size: 1.5em;
+            color: #000;
+            margin: 20px;
+            white-space: pre-wrap;
+        }
+
+        /* Create animation for text to appear one word at a time */
+        #letter-text span {
+            display: inline-block;
+            opacity: 0;
+            animation: appear 1s forwards;
+        }
+
+        @keyframes appear {
+            100% {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Envelope -->
+    <div id="envelope"></div>
+
+    <!-- Letter -->
+    <div id="letter">
+        <div id="letter-text"></div>
+    </div>
+
+    <script>
+        // Handle envelope click
+        const envelope = document.getElementById('envelope');
+        const letter = document.getElementById('letter');
+        const letterText = document.getElementById('letter-text');
+
+        envelope.addEventListener('click', () => {
+            // Hide envelope and show the letter drop animation
+            envelope.style.animation = 'none';
+            envelope.style.transform = 'scale(0)';
+            
+            setTimeout(() => {
+                letter.style.display = 'block'; // Show letter
+                letter.style.animation = 'drop 2s forwards ease-in-out'; // Start falling animation
+                displayText(); // Start displaying the text after the letter drops
+            }, 500); // Delay the letter animation
+        });
+
+        // Function to display text word by word with the exact format
+        function displayText() {
+            const message = [
+                '    ',
+                '    ',
+                'Happy Wedding Anniversary.',
+                'Thanks!'
+            ];
+
+            let index = 0;
+
+            function addWord() {
+                if (index < message.length) {
+                    const span = document.createElement('span');
+                    span.innerText = message[index];
+                    letterText.appendChild(span);
+                    letterText.appendChild(document.createElement('br')); // Add a line break after each word
+                    index++;
+                    setTimeout(addWord, 1500); // Delay between each word
+                }
+            }
+
+            addWord();
+        }
+    </script>
+
+</body>
+</html>
